@@ -1,4 +1,6 @@
-﻿namespace BotTry
+﻿using Telegram.BotAPI.AvailableTypes;
+
+namespace BotTry
 {
     public static class Constants
     {
@@ -14,9 +16,17 @@
         // Teacher commands and keywords
         public const string TutorialStartMessage = "Cool! Let`s learn how to create bots step by step, unit by unit.\nFirst of all let ne show you how to send diiferent types of data. ";
         public const string ChoiceMessage = "Choose which one you want me to explain: ";
+        public const string ExampleChoiceMessage = "Let`s try!";
         public const string FurtherMessage = "\n\nLet`s go further!";
         public const string ExampleMessage = "The next message is an example of the {0} message.";
+        public const string ExampleButton = "Look at the example of the {0} button.";
         public const string MessageTypes = "There are many different types of message that a bot can send. Fortunately, methods for sending such messages are similar. Choose which one you`d like to try first: ";
+
+        public const string ExampleCallBackWow = "Wow!";
+        public const string ExampleCallBackHm = "Hm..";
+        public const string ExampleCallBackGreat = "Great)";
+        public const string BotPrefixMessage = "@tryTBbot ";
+
         public const string TextMessage = "To send a text message you can use this code snippet:\n\nvar message = await botClient.SendMessageAsync(\r\n    chatId: chatId,\r\n    text: \"Hello, World!\",\r\n    cancellationToken: cancellationToken);\n\nChat id can be got from your 'update' message when you start your bot.";
         public const string PhotoMessage = "To send a photo message you can use this code snippet:\n\nvar message = await botClient.SendPhotoAsync(\r\n   chatId: chatId,\r\n    photo: \"https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/GopherPhoto.jpg\",\r\n    caption: \"<b>Gopher</b>. <i>State</i>: <a>Hungry</a>\",\r\n    parseMode: ParseMode.HTML,\r\n     cancellationToken: cancellationToken);\n\nChat id can be got from your 'update' message when you start your bot.";
         public const string StickerMessage = "To send a sticker message you can use this code snippet:\n\nvar message = await botClient.SendStickerAsync(\r\n    chatId: chatId,\r\n    sticker: \"https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/Otter.webp\",\r\n     cancellationToken: cancellationToken);\n\nChat id can be got from your 'update' message when you start your bot.";
@@ -31,5 +41,12 @@
         public const string ContactMessage = "To send a contact message you can use this code snippet:\n\nvar message = await botClient.SendContactAsync(\r\n     chatId: chatId,\r\n    phoneNumber: \"+1234567890\",\r\n    firstName: \"Stepan\",\r\n    lastName: \"Bandera\",\r\n    cancellationToken: cancellationToken);\n\nChat id can be got from your 'update' message when you start your bot.";
         public const string VenueMessage = "To send a venue message you can use this code snippet:\n\nvar message = await botClient.SendVenueAsync(\r\n    chatId: chatId,\r\n    latitude: 50.0840172f,\r\n    longitude: 14.418288f,\r\n    title: \"Man Hanging out\",\r\n    address: \"Husova, 110 00 Staré Město, Czechia\",\r\n    cancellationToken: cancellationToken);\n\nChat id can be got from your 'update' message when you start your bot.";
         public const string LocationMessage = "To send a location message you can use this code snippet:\n\nvar message = await botClient.SendLocationAsync(\r\n    chatId: chatId,\r\n    latitude: 33.747252f,\r\n    longitude: -112.633853f,\r\n    cancellationToken: cancellationToken);\n\nChat id can be got from your 'update' message when you start your bot.";
+
+        public const string SingleRowReplyButtonMessage = "To create a single-row reply button you can use this code snippet:\n\nvar replyKeyboardMarkup = new ReplyKeyboardMarkup(new[]\r\n                {\r\n                    new KeyboardButton[] {\r\n                        new KeyboardButton(Constants.ExampleCallBackWow),\r\n                        new KeyboardButton(Constants.ExampleCallBackHm) },\r\n                })\r\n            {\r\n                ResizeKeyboard = true\r\n            };\r\n\r\n            await botClient.SendMessageAsync(\r\n                chatId: chatId,\r\n                text: Constants.ExampleChoiceMessage,\r\n                replyMarkup: replyKeyboardMarkup,\r\n                cancellationToken: cancellationToken);\n\nChat id can be got from your 'update' message when you start your bot.";
+        public const string MultiRowReplyButtonMessage = "To create a multi-row reply button you can use this code snippet:\n\nvar replyKeyboardMarkup = new ReplyKeyboardMarkup(new[]\r\n                {\r\n                    new KeyboardButton[] { \r\n                        new KeyboardButton(Constants.ExampleCallBackWow), \r\n                        new KeyboardButton(Constants.ExampleCallBackHm)},\r\n                    new KeyboardButton[] { \r\n                        new KeyboardButton(Constants.ExampleCallBackGreat) },\r\n                })\r\n            {\r\n                ResizeKeyboard = true\r\n            };";
+        public const string RequestReplyButtonMessage = "To create a request reply button you can use this code snippet:\n\nvar replyKeyboardMarkup = new ReplyKeyboardMarkup(new[]\r\n            {\r\n                new KeyboardButton[]{\r\n                    new KeyboardButton(\"Share Location\")\r\n                    {\r\n                        RequestLocation = true\r\n                    },\r\n                    new KeyboardButton(\"Share Contact\")\r\n                    {\r\n                        RequestContact = true\r\n                    }\r\n                }\r\n            })\r\n            {\r\n                ResizeKeyboard = true\r\n            };";
+        public const string CallbackInlineButtonMessage = "To create a callback inline button you can use this code snippet:\n\nvar inlineKeyboard = new InlineKeyboardMarkup(new[]\r\n            {\r\n                // first row\r\n                new []\r\n                {\r\n                    InlineKeyboardButton.SetCallbackData(text: Constants.ExampleCallBackWow, callbackData: Constants.ExampleCallBackWow),\r\n                    InlineKeyboardButton.SetCallbackData(text: Constants.ExampleCallBackHm, callbackData: Constants.ExampleCallBackHm)\r\n                },\r\n                // second row\r\n                new []\r\n                {\r\n                    InlineKeyboardButton.SetCallbackData(text: Constants.ExampleCallBackGreat, callbackData: Constants.ExampleCallBackGreat)\r\n                }\r\n            });";
+        public const string UrlInlineButtonMessage = "To create a url inline button you can use this code snippet:\n\nvar inlineKeyboard = new InlineKeyboardMarkup(new[]\r\n            {\r\n                new InlineKeyboardButton(\"Link to the Repository\")\r\n                {\r\n                    Url = \"https://github.com/DeccemberGirl/BotTryFiles\"\r\n                }\r\n            });";
+        public const string SwitchInlineButtonMessage = "To create a switch inline button you can use this code snippet:\n\nvar inlineKeyboard = new InlineKeyboardMarkup(new[]\r\n            {\r\n                new InlineKeyboardButton(\"Share with\")\r\n                {\r\n                    SwitchInlineQuery = Constants.ExampleCallBackWow\r\n                },\r\n                new InlineKeyboardButton(\"Share in the current chat\")\r\n                {\r\n                    SwitchInlineQueryCurrentChat = Constants.ExampleCallBackGreat\r\n                }\r\n            });";
     }
 }

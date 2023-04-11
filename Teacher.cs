@@ -3,7 +3,6 @@ using BotTry.UnitsTutorials;
 using Telegram.BotAPI;
 using Telegram.BotAPI.AvailableMethods;
 using Telegram.BotAPI.AvailableTypes;
-using Telegram.BotAPI.UpdatingMessages;
 
 namespace BotTry
 {
@@ -21,7 +20,7 @@ namespace BotTry
 
         public static async Task ShowMessageTypesAsync(BotClient botClient, long chatId, CancellationToken cancellationToken = default)
         {
-            InlineKeyboardMarkup inlineKeyboard = new(new[]
+            var inlineKeyboard = new InlineKeyboardMarkup(new[]
             {
                 // first row
                 new []
@@ -56,6 +55,37 @@ namespace BotTry
                 {
                     InlineKeyboardButton.SetCallbackData(text: MessageType.VENUE.ToString(), callbackData: MessageType.VENUE.ToString()),
                     InlineKeyboardButton.SetCallbackData(text: MessageType.LOCATION.ToString(), callbackData: MessageType.LOCATION.ToString()),
+                }
+            });
+
+            var sentMessage = await botClient.SendMessageAsync(
+                chatId: chatId,
+                text: Constants.ChoiceMessage,
+                replyMarkup: inlineKeyboard,
+                cancellationToken: cancellationToken);
+        }
+
+        public static async Task ShowButtonTypesAsync(BotClient botClient, long chatId, CancellationToken cancellationToken = default)
+        {
+            var inlineKeyboard = new InlineKeyboardMarkup(new[]
+            {
+                // first row
+                new []
+                {
+                    InlineKeyboardButton.SetCallbackData(text: ButtonType.SINGLE_ROW_REPLY.ToString(), callbackData: ButtonType.SINGLE_ROW_REPLY.ToString()),
+                    InlineKeyboardButton.SetCallbackData(text: ButtonType.MULTI_ROW_REPLY.ToString(), callbackData: ButtonType.MULTI_ROW_REPLY.ToString()),
+                },
+                // second row
+                new []
+                {
+                    InlineKeyboardButton.SetCallbackData(text: ButtonType.REQUEST_REPLY.ToString(), callbackData: ButtonType.REQUEST_REPLY.ToString()),
+                    InlineKeyboardButton.SetCallbackData(text: ButtonType.CALLBACK_INLINE.ToString(), callbackData: ButtonType.CALLBACK_INLINE.ToString()),
+                },
+                // third row
+                new []
+                {
+                    InlineKeyboardButton.SetCallbackData(text: ButtonType.URL_INLINE.ToString(), callbackData: ButtonType.URL_INLINE.ToString()),
+                    InlineKeyboardButton.SetCallbackData(text: ButtonType.SWITCH_INLINE.ToString(), callbackData: ButtonType.SWITCH_INLINE.ToString()),
                 }
             });
 
@@ -128,6 +158,44 @@ namespace BotTry
             }
 
             await ShowMessageTypesAsync(botClient, query.Message.Chat.Id, cancellationToken);
+        }
+
+        public static async Task ExplainButtonTypeAsync(BotClient botClient, CallbackQuery query, CancellationToken cancellationToken = default)
+        {
+            if (query.Data == null)
+            {
+                return;
+            }
+
+            var callbackTextToUpper = query.Data.ToUpper();
+
+            var buttonTypeFromCallback = default(ButtonType);
+            Enum.TryParse(callbackTextToUpper, out buttonTypeFromCallback);
+
+            switch (buttonTypeFromCallback)
+            {
+                case ButtonType.SINGLE_ROW_REPLY:
+                    await ButtonTypesTutorial.ExplainSingleRowReplyButton(botClient, query, cancellationToken);
+                    break;
+                case ButtonType.MULTI_ROW_REPLY:
+                    await ButtonTypesTutorial.ExplainMultiRowReplyButton(botClient, query, cancellationToken);
+                    break;
+                case ButtonType.REQUEST_REPLY:
+                    await ButtonTypesTutorial.ExplainRequestReplyButton(botClient, query, cancellationToken);
+                    break;
+                case ButtonType.CALLBACK_INLINE:
+                    await ButtonTypesTutorial.ExplainCallbackInlineButton(botClient, query, cancellationToken);
+                    break;
+                case ButtonType.URL_INLINE:
+                    await ButtonTypesTutorial.ExplainUrlInlineButton(botClient, query, cancellationToken);
+                    break;
+                case ButtonType.SWITCH_INLINE:
+                    await ButtonTypesTutorial.ExplainSwitchInlineButton(botClient, query, cancellationToken);
+                    break;
+                default:
+                    await new BasicBot(botClient).HandleUnknownMessageAsync(query.Message.Chat.Id, cancellationToken);
+                    break;
+            }
         }
     }
 }

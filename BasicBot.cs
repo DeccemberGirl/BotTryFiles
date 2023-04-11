@@ -2,7 +2,6 @@
 using BotTry.Enums.CommandEnums;
 using Telegram.BotAPI;
 using Telegram.BotAPI.AvailableMethods;
-using Telegram.BotAPI.AvailableMethods.FormattingOptions;
 using Telegram.BotAPI.AvailableTypes;
 using Telegram.BotAPI.GettingUpdates;
 using Telegram.BotAPI.Stickers;
@@ -62,18 +61,6 @@ namespace BotTry
             }
         }
 
-        public async Task HandleUnknownMessageAsync(long chatId, CancellationToken cancellationToken = default)
-        {
-            await _botClient.SendStickerAsync(
-                                chatId: chatId,
-                                sticker: "https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/TogoNihtoNeZnaPoderevyansky.webp",
-                                cancellationToken: cancellationToken);
-            await _botClient.SendMessageAsync(
-                    chatId: chatId,
-                    text: Constants.UnknownMessage,
-                    cancellationToken: cancellationToken);
-        }
-
         async Task HandleUpdateAsync(Update update, CancellationToken cancellationToken = default)
         {
             switch (update.Type)
@@ -98,93 +85,18 @@ namespace BotTry
                     {
                         await HandleUnitCommandsAsync(unitCommand, chatId, cancellationToken);
                     }
+                    else if (update.Message.Text == Constants.ExampleCallBackWow
+                        || update.Message.Text == Constants.ExampleCallBackHm
+                        || update.Message.Text == Constants.ExampleCallBackGreat
+                        || update.Message.Text == Constants.BotPrefixMessage + Constants.ExampleCallBackGreat
+                        || update.Message.Contact != null)
+                    {
+                        await HandleExampleButtonCallbacksAsync(chatId, cancellationToken);
+                    }
                     else
                     {
                         await HandleUnknownMessageAsync(chatId, cancellationToken);
                     }
-
-
-                    //else if (update.Message.Text.ToUpper().Contains("BUTTON"))
-                    //{
-                    // INLINE BUTTON
-                    //var message = await _botClient.SendMessageAsync(
-                    //    chatId: chatId,
-                    //    text: "Trying *all the parameters* of `sendMessage` method",
-                    //    parseMode: ParseMode.MarkdownV2,
-                    //    disableNotification: true,
-                    //    replyToMessageId: update.Message.MessageId,
-                    //    replyMarkup: new InlineKeyboardMarkup(new List<InlineKeyboardButton>
-                    //    {
-                    //         new InlineKeyboardButton
-                    //         {
-                    //             Text = "Check sendMessage method",
-                    //             Url = "https://core.telegram.org/bots/api#sendmessage",
-                    //             CallbackData = Constants.LinkIsPressedButtonCallbackData
-                    //         }
-                    //    }), 
-                    //    cancellationToken: cancellationToken);
-
-                    // REPLY BUTTON ONE ROW
-                    //var replyKeyboardMarkup = new ReplyKeyboardMarkup(new[]
-                    //    {
-                    //        new KeyboardButton[] { 
-                    //            new KeyboardButton("Help me"), 
-                    //            new KeyboardButton("Call me ☎️") },
-                    //    })
-                    //{
-                    //    ResizeKeyboard = true
-                    //};
-
-                    //var sentMessage = await _botClient.SendMessageAsync(
-                    //    chatId: chatId,
-                    //    text: "Choose a response",
-                    //    replyMarkup: replyKeyboardMarkup,
-                    //    cancellationToken: cancellationToken);
-
-                    // HIDING BUTTON
-                    //await _botClient.SendMessageAsync(
-                    //    chatId: chatId,
-                    //    text: "Removing keyboard",
-                    //    replyMarkup: new ReplyKeyboardRemove(),
-                    //    cancellationToken: cancellationToken);
-
-                    // INLINE CALLBACK BUTTONS
-                    //var inlineKeyboard = new InlineKeyboardMarkup(new List<List<InlineKeyboardButton>>
-                    //{
-                    //    // first row
-                    //    new List<InlineKeyboardButton>
-                    //    {
-                    //        InlineKeyboardButton.SetCallbackData("1.1", "11"),
-                    //        InlineKeyboardButton.SetCallbackData("1.2", "12"),
-                    //    },
-                    //    // second row
-                    //    new List<InlineKeyboardButton>
-                    //    {
-                    //        InlineKeyboardButton.SetCallbackData("2.1","21"),
-                    //        InlineKeyboardButton.SetCallbackData("2.2", "22"),
-                    //    },
-                    //});
-
-                    //var sentMessage = await _botClient.SendMessageAsync(
-                    //    chatId: chatId,
-                    //    text: "A message with an inline keyboard markup",
-                    //    replyMarkup: inlineKeyboard,
-                    //    cancellationToken: cancellationToken);
-
-                    //    var inlineKeyboard = new InlineKeyboardMarkup(new[]
-                    //    {
-                    //        InlineKeyboardButton.SetSwitchInlineQuery(
-                    //            "send to the other chat", "sending message to the other chat: switch_inline_query"),
-                    //        InlineKeyboardButton.SetSwitchInlineQueryCurrentChat(
-                    //            "send to this chat", "sending message to this chat: switch_inline_query_current_chat"),
-                    //    });
-
-                    //    var sentMessage = await _botClient.SendMessageAsync(
-                    //        chatId: chatId,
-                    //        text: "A message with an inline keyboard markup",
-                    //        replyMarkup: inlineKeyboard,
-                    //        cancellationToken: cancellationToken);
-                    //}
                     break;
                 case UpdateType.CallbackQuery:
                     var query = update.CallbackQuery;
@@ -194,9 +106,20 @@ namespace BotTry
                     }
 
                     var messageTypeFromCallback = default(MessageType);
+                    var buttonTypeFromCallback = default(ButtonType);
                     if (Enum.TryParse(query.Data.ToUpper(), out messageTypeFromCallback))
                     {
                         await Teacher.ExplainMessageTypeAsync(_botClient, query, cancellationToken);                       
+                    }
+                    else if (Enum.TryParse(query.Data.ToUpper(), out buttonTypeFromCallback))
+                    {
+                        await Teacher.ExplainButtonTypeAsync(_botClient, query, cancellationToken);
+                    }
+                    else if (query.Data == Constants.ExampleCallBackWow
+                        || query.Data == Constants.ExampleCallBackHm
+                        || query.Data == Constants.ExampleCallBackGreat)
+                    {
+                        await HandleExampleButtonCallbacksAsync(query.Message.Chat.Id, cancellationToken);
                     }
                     break;
             }
@@ -237,6 +160,7 @@ namespace BotTry
                     await Teacher.ShowMessageTypesAsync(_botClient, chatId, cancellationToken);
                     break;
                 case UnitCommand.BUTTONS:
+                    await Teacher.ShowButtonTypesAsync(_botClient, chatId, cancellationToken);
                     break;
                 case UnitCommand.GETTING_UPDATES:
                     break;
@@ -247,6 +171,32 @@ namespace BotTry
                 default:
                     break;
             }           
+        }
+
+        public async Task HandleExampleButtonCallbacksAsync(long chatId, CancellationToken cancellationToken = default)
+        {
+            await _botClient.SendMessageAsync(
+                            chatId: chatId,
+                            text: "Ok",
+                            replyMarkup: new ReplyKeyboardRemove(),
+                            cancellationToken: cancellationToken);
+            await _botClient.SendMessageAsync(
+                chatId: chatId,
+                text: Constants.FurtherMessage,
+                cancellationToken: cancellationToken);
+            await Teacher.ShowButtonTypesAsync(_botClient, chatId, cancellationToken);
+        }
+
+        public async Task HandleUnknownMessageAsync(long chatId, CancellationToken cancellationToken = default)
+        {
+            await _botClient.SendStickerAsync(
+                                chatId: chatId,
+                                sticker: "https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/TogoNihtoNeZnaPoderevyansky.webp",
+                                cancellationToken: cancellationToken);
+            await _botClient.SendMessageAsync(
+                    chatId: chatId,
+                    text: Constants.UnknownMessage,
+                    cancellationToken: cancellationToken);
         }
 
         private async Task StartDialog(long chatId, CancellationToken cancellationToken = default)
