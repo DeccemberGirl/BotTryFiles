@@ -96,28 +96,38 @@ namespace BotTry
                     await MessageTypesTutorial.ExplainVoiceMessage(botClient, query, cancellationToken);
                     break;
                 case MessageType.VIDEO:
+                    await MessageTypesTutorial.ExplainVideoMessage(botClient, query, cancellationToken);
                     break;
                 case MessageType.VIDEO_NOTE:
+                    await MessageTypesTutorial.ExplainVideoNoteMessage(botClient, query, cancellationToken);
                     break;
                 case MessageType.ALBUM:
+                    await MessageTypesTutorial.ExplainAlbumMessage(botClient, query, cancellationToken);
                     break;
                 case MessageType.DOCUMENT:
+                    await MessageTypesTutorial.ExplainDocumentMessage(botClient, query, cancellationToken);
                     break;
                 case MessageType.ANIMATION:
+                    await MessageTypesTutorial.ExplainAnimationMessage(botClient, query, cancellationToken);
                     break;
                 case MessageType.POLL:
+                    await MessageTypesTutorial.ExplainPollMessage(botClient, query, cancellationToken);
                     break;
                 case MessageType.CONTACT:
+                    await MessageTypesTutorial.ExplainContactMessage(botClient, query, cancellationToken);
                     break;
                 case MessageType.VENUE:
+                    await MessageTypesTutorial.ExplainVenueMessage(botClient, query, cancellationToken);
                     break;
                 case MessageType.LOCATION:
+                    await MessageTypesTutorial.ExplainLocationMessage(botClient, query, cancellationToken);
                     break;
                 default:
+                    await new BasicBot(botClient).HandleUnknownMessageAsync(query.Message.Chat.Id, cancellationToken);
                     break;
             }
 
-            await Teacher.ShowMessageTypesAsync(botClient, query.Message.Chat.Id, cancellationToken);
+            await ShowMessageTypesAsync(botClient, query.Message.Chat.Id, cancellationToken);
         }
     }
 }

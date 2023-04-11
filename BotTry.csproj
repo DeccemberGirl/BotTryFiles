@@ -11,4 +11,16 @@
     <PackageReference Include="Telegram.BotAPI" Version="6.6.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\ASAFATOV_YaDavnoNeVmykavTelefon.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\CatTalking.ogg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Sklo.mp4">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

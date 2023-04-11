@@ -23,6 +23,16 @@ namespace BotTry
                 new BotCommand("units", "choose a unit to learn"));
         }
 
+        public BasicBot(BotClient botClient)
+        {
+            _botClient = botClient;
+            _botClient.SetMyCommands(
+                new BotCommand("start", "start a dialog"),
+                new BotCommand("help", "show commands"),
+                new BotCommand("learn", "a bots creating tutorial"),
+                new BotCommand("units", "choose a unit to learn"));
+        }
+
         public void GetBotGreeting()
         {
             var me = _botClient.GetMe();
@@ -50,6 +60,18 @@ namespace BotTry
                     updates = _botClient.GetUpdates();
                 }
             }
+        }
+
+        public async Task HandleUnknownMessageAsync(long chatId, CancellationToken cancellationToken = default)
+        {
+            await _botClient.SendStickerAsync(
+                                chatId: chatId,
+                                sticker: "https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/TogoNihtoNeZnaPoderevyansky.webp",
+                                cancellationToken: cancellationToken);
+            await _botClient.SendMessageAsync(
+                    chatId: chatId,
+                    text: Constants.UnknownMessage,
+                    cancellationToken: cancellationToken);
         }
 
         async Task HandleUpdateAsync(Update update, CancellationToken cancellationToken = default)
@@ -238,18 +260,6 @@ namespace BotTry
                 chatId: chatId,
                 text: string.Format(Constants.BotIntroduction, _botClient.GetMe().Id, _botClient.GetMe().FirstName),
                 cancellationToken: cancellationToken);
-        }
-
-        private async Task HandleUnknownMessageAsync(long chatId, CancellationToken cancellationToken = default)
-        {
-            await _botClient.SendStickerAsync(
-                                chatId: chatId,
-                                sticker: "https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/TogoNihtoNeZnaPoderevyansky.webp",
-                                cancellationToken: cancellationToken);
-            await _botClient.SendMessageAsync(
-                    chatId: chatId,
-                    text: Constants.UnknownMessage,
-                    cancellationToken: cancellationToken);
         }
 
         async Task HandleLinkIsPressed(long chatId, CancellationToken cancellationToken = default)
