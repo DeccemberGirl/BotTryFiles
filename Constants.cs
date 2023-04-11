@@ -10,7 +10,17 @@
         public const string NiceWeatherMessage = "Hi! What a nice weather, eh?";
         public const string UnitsListMessage = "/message_types - learn how to send different types of media, text etc. \n/buttons - lets look at buttons markups \n/getting_updates - methods of getting responses from user \n/files - how to work with files and documents \n/security - proxy, passport, decryption and so on";
         public const string UnknownMessage = "I`m too young to understand all words you know. Please use my standart commands yet :)";
-       
-        // Commands and keywords
+
+        // Teacher Commands and keywords
+        public const string TutorialStartMessage = "Cool! Let`s learn how to create bots step by step, unit by unit.\nFirst of all let ne show you how to send diiferent types of data. ";
+        public const string ChoiceMessage = "Choose which one you want me to explain: ";
+        public const string FurtherMessage = "\n\nLet`s go further!";
+        public const string ExampleMessage = "The next message is an example of the {0} message.";
+        public const string MessageTypes = "There are many different types of message that a bot can send. Fortunately, methods for sending such messages are similar. Choose which one you`d like to try first: ";
+        public const string TextMessage = "To send text message you can use this code snippet:\n\nvar message = await botClient.SendMessageAsync(\r\n    chatId: chatId,\r\n    text: \"Hello, World!\",\r\n    cancellationToken: cancellationToken);\n\nChat id can be got from your 'update' message when you start your bot.";
+        public const string PhotoMessage = "To send photo message you can use this code snippet:\n\nvar message = await botClient.SendPhotoAsync(\r\n   chatId: chatId,\r\n    photo: \"https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/GopherPhoto.jpg\",\r\n    caption: \"<b>Gopher</b>. <i>State</i>: <a>Hungry</a>\",\r\n    parseMode: ParseMode.HTML,\r\n     cancellationToken: cancellationToken);\n\nChat id can be got from your 'update' message when you start your bot.";
+        public const string StickerMessage = "To send sticker message you can use this code snippet:\n\nvar message = await botClient.SendStickerAsync(\r\n    chatId: chatId,\r\n    sticker: \"https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/Otter.webp\",\r\n     cancellationToken: cancellationToken);\n\nChat id can be got from your 'update' message when you start your bot.";
+        public const string AudioMessage = "To send audio message you can use this code snippet:\n\nvar message = await botClient.SendAudioAsync(\r\n    chatId: chatId,\r\n    audio: \"https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/SurzhykMstyslavKrupenya.mp3\",\r\n    performer: \"Mstyslav Krupenya\",\r\n    title: \"Surzhyk\",\r\n    duration: 124, \r\n    cancellationToken: cancellationToken);\n\nChat id can be got from your 'update' message when you start your bot.";
+        public const string VoiceMessage = "To send voice message you can use this code snippet:\n\nawait using (var stream = File.OpenRead(\"https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/CatTalking.ogg\"))\r\n            {\r\n                await botClient.SendVoiceAsync(\r\n                    chatId: chatId,\r\n                    voice: new InputFile(new StreamContent(stream!), \"CatTalking.ogg\"),\r\n                    duration: 22,\r\n                    cancellationToken: cancellationToken);\r\n            }\n\nChat id can be got from your 'update' message when you start your bot.";
     }
 }
