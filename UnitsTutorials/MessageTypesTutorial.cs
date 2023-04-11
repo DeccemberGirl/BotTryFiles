@@ -1,12 +1,11 @@
-﻿using Telegram.BotAPI.AvailableTypes;
-using Telegram.BotAPI.UpdatingMessages;
+﻿using BotTry.Enums;
 using Telegram.BotAPI;
 using Telegram.BotAPI.AvailableMethods;
-using BotTry.Enums;
 using Telegram.BotAPI.AvailableMethods.FormattingOptions;
+using Telegram.BotAPI.AvailableTypes;
 using Telegram.BotAPI.Stickers;
+using Telegram.BotAPI.UpdatingMessages;
 using File = System.IO.File;
-using System;
 
 namespace BotTry.UnitsTutorials
 {
@@ -251,8 +250,8 @@ namespace BotTry.UnitsTutorials
                 chatId: query.Message.Chat.Id,
                 media: new List<InputMedia>
                 {
-                    new InputMediaPhoto("https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/Fish1.jpg"),
-                    new InputMediaPhoto("https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/Fish2.jpg"),
+                    new InputMediaPhoto("https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/fe154dd34a490af56bb51da4b64b6113070850e6/Resources/Fish1.jpg"),
+                    new InputMediaPhoto("https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/fe154dd34a490af56bb51da4b64b6113070850e6/Resources/Fish2.jpg"),
                 },
                 cancellationToken: cancellationToken);
 
@@ -281,12 +280,15 @@ namespace BotTry.UnitsTutorials
                 text: string.Format(Constants.ExampleMessage, MessageType.DOCUMENT.ToString().ToLower()),
                 cancellationToken: cancellationToken);
 
-            await botClient.SendDocumentAsync(
+            await using (var stream = File.OpenRead("Resources\\TextDoc.txt"))
+            {
+                await botClient.SendDocumentAsync(
                 chatId: query.Message.Chat.Id,
-                document: "https://raw.githubusercontent.com/DeccemberGirl/BotTryFiles/master/Resources/TextDoc.txt",
+                document: new InputFile(new StreamContent(stream!), "TextDoc.txt"),
                 caption: "<b>Weather question</b>. <i>Umbrella</i>: <a>To take or not?</a>",
                 parseMode: ParseMode.HTML,
                 cancellationToken: cancellationToken);
+            }
 
             await botClient.SendMessageAsync(
                 chatId: query.Message.Chat.Id,
@@ -451,8 +453,8 @@ namespace BotTry.UnitsTutorials
 
             await botClient.SendLocationAsync(
                 chatId: query.Message.Chat.Id,
-                latitude: 33.747252f,
-                longitude: -112.633853f,
+                latitude: 17.395016f,
+                longitude: 18.826143f,
                 cancellationToken: cancellationToken);
 
             await botClient.SendMessageAsync(
